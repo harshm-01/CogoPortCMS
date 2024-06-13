@@ -9,5 +9,6 @@ __pycache__
 # VIRTUAL ENVIRONMENT
 virtual-env
 
-# VS CODE SETTINGS
+# IDE SETTINGS
 .vscode
+.idea

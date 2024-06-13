@@ -1,19 +1,20 @@
 from fastapi import FastAPI, APIRouter, Depends, HTTPException, Response, status
 from typing import Optional
-from harshCMS.models import models
+from harshCMS.models import models # Please recheck the import is correct in your system 
 from harshCMS.schemas import schema
 from harshCMS.database.db import engine, SessionLocal
 from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import IntegrityError
 
 
-
+# Created an APIRouter instance for CMS routes
 cms = APIRouter()
 
+# Creating all database tables based on the models defined
 models.Base.metadata.create_all(engine)
 
 
-
+# Dependency function to get a database session
 def get_db():
     db = SessionLocal()
     try:
@@ -23,14 +24,14 @@ def get_db():
 
 
 
-
+# Route for the root endpoint - Provide my details
 @cms.get('/')
 def intro():
     return {'Data': {'Name': 'Harsh Maurya', 'Enrollment No': 20117056, 'University': 'IIT Roorkee'}}
 
 
 
-
+# Route to create a new configuration
 @cms.post('/create_configuration', status_code=status.HTTP_201_CREATED)
 def create_config(request: schema.Config, db: Session = Depends(get_db)):
     try:
@@ -48,7 +49,7 @@ def create_config(request: schema.Config, db: Session = Depends(get_db)):
     
 
 
-    
+# Route to get all configurations
 @cms.get('/get_all_configuration')
 def all(db: Session = Depends(get_db)):
     config = db.query(models.Config).all()
@@ -58,7 +59,7 @@ def all(db: Session = Depends(get_db)):
 
 
 
-
+# Route to get a specific configuration by country code
 @cms.get('/get_configuration/{country}')
 def get_config(country, db: Session = Depends(get_db)):
     config = db.query(models.Config).filter(models.Config.country_code == country).first()
@@ -68,7 +69,7 @@ def get_config(country, db: Session = Depends(get_db)):
 
 
 
-
+# Route to delete a configuration by country code
 @cms.delete('/delete_configuration/{country}', status_code=status.HTTP_204_NO_CONTENT)
 def delete_config(country,  db: Session = Depends(get_db)):
     config = db.query(models.Config).filter(models.Config.country_code == country)
@@ -80,7 +81,7 @@ def delete_config(country,  db: Session = Depends(get_db)):
 
 
 
-
+# Route to update a configuration by country code
 @cms.post('/update_configuration/{country}', status_code=status.HTTP_202_ACCEPTED)
 def update_config(country, request: schema.Config, db: Session = Depends(get_db)):
     config = db.query(models.Config).filter(models.Config.country_code == country)
