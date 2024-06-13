@@ -35,13 +35,13 @@ The API provides endpoints to manage configurations for different countries. It 
 **3. `GET /get_all_configurations`**
    - This endpoint retrieves all the created configurations present in the table.
 
-**4. `GET /get_configuration/{country_code}`**
+**4. `GET /get_configuration/{country}`**
    - This endpoint retrieves the configuration for a specific country. The country code must be provided in the endpoint.
 
-**5. `DELETE /configuration/{country_code}`**
+**5. `DELETE /configuration/{country}`**
    - This endpoint deletes the configuration for a country upon providing the country code.
 
-**6. `POST /update_configuration/{country_code}`**
+**6. `POST /update_configuration/{country}`**
    - This endpoint updates parameters such as the business name, and adds or deletes fields in `registration_numbers` and `additional_data` for a country. The country code must be provided.
    - If the country code is accidentally changed, it will not be updated in the database. Only other fields will be changed, keeping the country code intact.
 
