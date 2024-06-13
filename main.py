@@ -27,7 +27,7 @@ def intro():
 @app.post('/create_configuration', status_code=status.HTTP_201_CREATED)
 def create_config(request: schema.Config, db: Session = Depends(get_db)):
     try:
-        new_config = models.Config(country_code=request.country_code, business_name=request.business_name, additional_data=request.additional_data)
+        new_config = models.Config(country_code=request.country_code, business_name=request.business_name, registration_numbers=request.registration_numbers, additional_data=request.additional_data)
         db.add(new_config)
         db.commit()
         db.refresh(new_config)
@@ -71,8 +71,6 @@ def update_config(country, request: schema.Config, db: Session = Depends(get_db)
     config = db.query(models.Config).filter(models.Config.country_code == country)
     if not config.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"The configuration with country code: {country} does not exist!")
-    config.update({"country_code": country, "business_name": request.business_name, "additional_data": request.additional_data})
+    config.update({"country_code": country, "business_name": request.business_name, "registration_numbers": request.registration_numbers, "additional_data": request.additional_data})
     db.commit()
     return "Updated Successfully!"
-
-

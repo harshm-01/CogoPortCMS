@@ -5,7 +5,8 @@ from .db import Base
 
 
 class Config(Base):
-    __tablename__ = "country_configurations"
+    __tablename__ = "country_config_table"
     country_code = Column(String, primary_key=True, index=True)
     business_name = Column(String)
+    registration_numbers = Column(JSON)
     additional_data = Column(JSON)
