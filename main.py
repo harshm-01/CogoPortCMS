@@ -33,10 +33,10 @@ def create_config(request: schema.Config, db: Session = Depends(get_db)):
         db.refresh(new_config)
         return new_config
     except IntegrityError as e:
-        db.rollback()  # Rollback the transaction
-        raise HTTPException(status_code=400, detail="Country code already exists")  # Or another appropriate status code and message
+        db.rollback()
+        raise HTTPException(status_code=400, detail="Country code already exists")
     except Exception as e:
-        db.rollback()  # Rollback the transaction for other exceptions
+        db.rollback()
         raise HTTPException(status_code=500, detail="Internal Server Error")
     
     
@@ -59,7 +59,7 @@ def delete_config(country,  db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"The configuration with country code: {country} does not exist!")
     config.delete(synchronize_session=False)
     db.commit()
-    return 'Deleted!'
+    return 'Deleted Successfully!'
 
 
 @app.post('/update_configuration/{country}', status_code=status.HTTP_202_ACCEPTED)
@@ -67,6 +67,6 @@ def update_config(country, request: schema.Config, db: Session = Depends(get_db)
     config = db.query(models.Config).filter(models.Config.country_code == country)
     if not config.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"The configuration with country code: {country} does not exist!")
-    config.update(request)
+    config.update({"country_code": country, "business_name": request.business_name, "additional_data": request.additional_data})
     db.commit()
     return "Updated Successfully!"
