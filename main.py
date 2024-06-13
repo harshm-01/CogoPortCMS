@@ -24,7 +24,7 @@ def intro():
     return {'Data': {'Name': 'Harsh Maurya', 'Enrollment No': 20117056, 'University': 'IIT Roorkee'}}
 
 
-@app.post('/create_configuration')
+@app.post('/create_configuration', status_code=status.HTTP_201_CREATED)
 def create_config(request: schema.Config, db: Session = Depends(get_db)):
     try:
         new_config = models.Config(country_code=request.country_code, business_name=request.business_name, additional_data=request.additional_data)
@@ -34,21 +34,25 @@ def create_config(request: schema.Config, db: Session = Depends(get_db)):
         return new_config
     except IntegrityError as e:
         db.rollback()
-        raise HTTPException(status_code=400, detail="Country code already exists")
+        raise HTTPException(status_code=400, detail="Country code already exists!")
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+        raise HTTPException(status_code=500, detail="Internal Server Error.")
     
     
 @app.get('/get_all_configuration')
 def all(db: Session = Depends(get_db)):
     config = db.query(models.Config).all()
+    if not config:
+        raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail=f"No configuration are here! Add them at create_configuration endpoint!")
     return config
 
 
 @app.get('/get_configuration/{country}')
 def get_config(country, db: Session = Depends(get_db)):
     config = db.query(models.Config).filter(models.Config.country_code == country).first()
+    if not config:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"The configuration with country code: {country} does not exist!")
     return config
 
 
@@ -70,3 +74,5 @@ def update_config(country, request: schema.Config, db: Session = Depends(get_db)
     config.update({"country_code": country, "business_name": request.business_name, "additional_data": request.additional_data})
     db.commit()
     return "Updated Successfully!"
+
+

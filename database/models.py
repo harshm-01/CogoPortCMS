@@ -8,4 +8,4 @@ class Config(Base):
     __tablename__ = "country_configurations"
     country_code = Column(String, primary_key=True, index=True)
     business_name = Column(String)
-    additional_data = Column(JSON)    
+    additional_data = Column(JSON)
