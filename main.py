@@ -27,7 +27,7 @@ def intro():
 @app.post('/create_configuration')
 def create_config(request: schema.Config, db: Session = Depends(get_db)):
     try:
-        new_config = models.Config(country_code=request.country_code, business_name=request.business_name)
+        new_config = models.Config(country_code=request.country_code, business_name=request.business_name, additional_data=request.additional_data)
         db.add(new_config)
         db.commit()
         db.refresh(new_config)
