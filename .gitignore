@@ -1,5 +1,13 @@
-# Git Ignore
+# Git Ignore Files
+
+# Environment Variables
 .env
+
+# CACHE DATA
 __pycache__
+
+# VIRTUAL ENVIRONMENT
 virtual-env
+
+# VS CODE SETTINGS
 .vscode
