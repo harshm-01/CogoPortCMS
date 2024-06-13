@@ -1,8 +1,9 @@
-# Web-Based-Metaverse
+# FASTAPI - Configuration Management System
 
 ## About Project
+A FastAPI application to manage a Configuration Management system for onboarding Organisations from each country. The API will provide functionalities for CRUD (Create, Read, Update, Delete) operations for managing configurations.
 
-### MetaCommerce - The Future of Shopping with Metaverse
+### Initialization
 
 **The solution focuses on:**
 
